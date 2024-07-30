@@ -6,7 +6,10 @@ class AuthenService {
     required username,
     required password,
   }) async {
-    var response = await BaseService().postReponseByJson(path: "/auth/login");
+    var response = await BaseService().postReponseByJson(
+      path: "/emp/login",
+      data: {"username": username, "password": password},
+    );
     if (response != null) {
       return utf8.decode(response.bodyBytes);
     }

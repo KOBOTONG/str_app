@@ -4,19 +4,15 @@ import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 
 class BaseService {
-  var serverUrl = "https://www.smethaidev.com";
+  // var serverUrl = "https://www.smethaidev.com";
   //api test
-  // var serverUrl = "https://railway.smethaidata.com";
-  var serverPath = "/api/v1";
+  var serverUrl = "https://railway.smethaidata.com";
+  var serverPath = "/api";
   String getServerUrl() {
     return serverUrl;
   }
 
   String getServerApiUrl() {
-    if (kDebugMode) {
-      print(" $serverUrl$serverPath");
-    }
-
     return serverUrl + serverPath;
   }
 
@@ -56,7 +52,7 @@ class BaseService {
     var client = http.Client();
     try {
       var url = Uri.parse(getServerApiUrl() + path);
-
+print(url);
       var response = token != null && token.isNotEmpty
           ? await client.get(
               url,
@@ -88,6 +84,7 @@ class BaseService {
     var client = http.Client();
     try {
       var url = Uri.parse(getServerApiUrl() + path);
+      print(url);
       var body = json.encode(data);
       var response = token != null && token.isNotEmpty
           ? await client.post(

@@ -1,10 +1,13 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math' as math;
 
 import 'package:srt_app/str/constants/color_constants.dart';
+import 'package:srt_app/str/controller/authen_controller.dart';
 import 'package:srt_app/str/page/home_user_page.dart';
+import 'package:srt_app/str/widgets/sme_alertdialog.dart';
 import 'package:srt_app/str/widgets/sme_buttons.dart';
 import 'package:srt_app/str/widgets/sme_textfileds.dart';
 
@@ -18,11 +21,14 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+
+  var authenController = Get.put(AuthenController());
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   @override
   void initState() {
     super.initState();
+
     _controller = AnimationController(
       value: 0.0,
       duration: Duration(seconds: 5),
@@ -89,17 +95,40 @@ class _LoginPageState extends State<LoginPage>
                 SMETextField(
                     label: 'รหัสผ่าน',
                     icon: FluentIcons.lock_closed_24_filled,
-                    controller: usernameController),
+                    controller: passwordController),
                 SizedBox(height: 30),
                 SMEButton(
                     onTap: () {
-                      Get.to(() => HomeUserPage());
+                      authenController
+                          .fetchLogin(
+                              username: usernameController.text,
+                              password: passwordController.text)
+                          .then((value) async {
+                        if (value.success == true) {
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          prefs.setString(
+                              "remember_username", usernameController.text);
+                          prefs.setString(
+                              "remember_password", passwordController.text);
+                          Get.to(() => const HomeUserPage());
+                        } else {
+                          Get.dialog(SMEAlertDialog(
+                            titleMessage: 'แจ้งเตือน',
+                            contentMessage: value.message!,
+                            submitButton: true,
+                            submitText: "ตกลง",
+                            onSubmit: () {
+                              Get.back();
+                            },
+                          ));
+                        }
+                      });
                     },
                     title: 'เข้าสู่ระบบ',
                     bg: primaryColor,
                     titlecolor: Colors.white),
                 SizedBox(height: 16),
-               
               ],
             ),
           )),

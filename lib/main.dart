@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:srt_app/str/constants/color_constants.dart';
 import 'package:srt_app/str/page/login_page.dart';
+import 'package:srt_app/str/page/splash_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +20,7 @@ class App extends StatelessWidget {
         fontFamily: 'Prompt-Regular',
         primarySwatch: primaryColor,
       ),
-      home: LoginPage(),
+      home: SplashPage(),
       debugShowCheckedModeBanner: false,
     );
   }
