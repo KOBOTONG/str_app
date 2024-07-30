@@ -99,25 +99,7 @@ class _LoginPageState extends State<LoginPage>
                     bg: primaryColor,
                     titlecolor: Colors.white),
                 SizedBox(height: 16),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 32),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text("เริ่มต้นใช้งาน ? "),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Text(
-                          "สมัครสมาชิก",
-                          style: TextStyle(
-                            color: primaryColor.shade700,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+               
               ],
             ),
           )),

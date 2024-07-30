@@ -4,9 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 
 class BaseService {
-  // var serverUrl = "https://www.smethaidev.com";
+  var serverUrl = "https://www.smethaidev.com";
   //api test
-  var serverUrl = "https://railway.smethaidata.com";
+  // var serverUrl = "https://railway.smethaidata.com";
   var serverPath = "/api/v1";
   String getServerUrl() {
     return serverUrl;
