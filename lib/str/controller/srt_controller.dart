@@ -8,41 +8,23 @@ import 'package:srt_app/str/widgets/loading.dart';
 import 'package:image_picker/image_picker.dart';
 
 class SRTController extends GetxController {
-  // Bottom Navigation
   var pageSelected = 0.obs;
-
-  // Technician Job Page
   var technicianJobSelected = 0.obs;
-
-  // User Job Page
   var userJobSelected = 0.obs;
-
   var userProfilePicture = Rx<Widget>(const SizedBox.shrink());
 
-  // Localstorage
+  XFile? selectedImage;
 
-
-
-
- 
-  // Upload Image - Technician Create Profile
-
-
-  // Image Picker
   final ImagePicker _imagePicker = ImagePicker();
 
   Future<XFile?> getImageFromGallery() async {
-    final XFile? image =
-        await _imagePicker.pickImage(source: ImageSource.gallery);
+    final XFile? image = await _imagePicker.pickImage(
+      source: ImageSource.gallery,
+      preferredCameraDevice: CameraDevice.rear,
+    );
+    selectedImage = image;
     return image;
   }
-
-  Future<XFile?> getImageFromCamera() async {
-    final XFile? image =
-        await _imagePicker.pickImage(source: ImageSource.camera);
-    return image;
-  }
-
   // Loading
   void showDialogLoading() {
     showDialog(

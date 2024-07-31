@@ -14,6 +14,7 @@ class AuthenController extends GetxController {
         password: password,
       );
       loginModel.value = LoginModel.fromJson(json.decode(jsonData));
+      print(json.decode(jsonData));
     } catch (e) {
       if (kDebugMode) {
         print(e);

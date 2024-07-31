@@ -24,6 +24,7 @@ class ServerController extends GetxController {
   Future<ServerTimeModel> fetchServerTime() async {
     try {
       String jsonData = await BaseService().getServerTime();
+      print(jsonData);
       serverTimeModel.value = ServerTimeModel.fromJson(json.decode(jsonData));
     } catch (e) {
       print(e);

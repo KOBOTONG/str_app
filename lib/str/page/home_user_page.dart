@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
@@ -6,10 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srt_app/str/constants/color_constants.dart';
 import 'package:intl/intl.dart';
 import 'package:srt_app/str/controller/authen_controller.dart';
 import 'package:srt_app/str/controller/server_controller.dart';
+import 'package:srt_app/str/controller/srt_controller.dart';
 import 'package:srt_app/str/controller/user_controller.dart';
 import 'package:srt_app/str/page/camera_page.dart';
 import 'package:srt_app/str/page/login_page.dart';
@@ -33,6 +36,7 @@ late double _scrollAlignment;
 class _HomeUserPageState extends State<HomeUserPage> {
   _HomeUserPageState() {
     userController.fetchBranch();
+    userController.fetchTimeStamp();
     serverController.checkPermission();
     serverController
         .fetchServerTime()
@@ -48,12 +52,12 @@ class _HomeUserPageState extends State<HomeUserPage> {
   // late double log;
   late double targetLat;
   late double targetLong;
-  late double targetBranceId;
+  late String targetBranceId;
   late double tarketPosition;
   final _loading = true.obs;
   var authenController = Get.put(AuthenController());
   var userController = Get.put(UserController());
-
+  var srtController = Get.put(SRTController());
   var serverController = Get.put(ServerController());
   Position? currentPosition;
   @override
@@ -126,8 +130,14 @@ class _HomeUserPageState extends State<HomeUserPage> {
                           elevation: 0,
                           actions: [
                             GestureDetector(
-                              onTap: () {
-                                Get.to(() => const LoginPage());
+                              onTap: () async {
+                                SharedPreferences prefs =
+                                    await SharedPreferences.getInstance();
+
+                                prefs.setString("remember_username", "");
+                                prefs.setString("remember_password", "");
+
+                                Get.offAll(() => LoginPage());
                               },
                               child: Stack(
                                 children: <Widget>[
@@ -317,20 +327,19 @@ class _HomeUserPageState extends State<HomeUserPage> {
                                                                               position) async {
                                                                         currentPosition =
                                                                             position;
-                                                                        //        double?
+                                                                        // double?
                                                                         //     userLatitude =
                                                                         //     currentPosition?.latitude;
                                                                         // double?
                                                                         //     userLongitude =
                                                                         //     currentPosition?.longitude;
-                                                                        //>20 13.775066813212964, 100.1263707476729
-                                                                        // 13.775243306180881, 100.12634593724
+
                                                                         double?
                                                                             userLatitude =
-                                                                            13.775066813212964;
+                                                                           13.738166829319173;
                                                                         double?
                                                                             userLongitude =
-                                                                            100.1263707476729;
+                                                                          100.6402582598057;
                                                                         List<String>
                                                                             nearbyStations =
                                                                             [];
@@ -351,6 +360,8 @@ class _HomeUserPageState extends State<HomeUserPage> {
                                                                                 : 0.0,
                                                                             'name':
                                                                                 e?.branchName ?? '',
+                                                                            'branchId':
+                                                                                e?.branchId ?? '',
                                                                           };
                                                                         }).toList();
 
@@ -377,7 +388,13 @@ class _HomeUserPageState extends State<HomeUserPage> {
 
                                                                           if (distance <=
                                                                               radius) {
-                                                                            print("Distance to ${station['name']}: ${distance} meters");
+                                                                            setState(() {
+                                                                              targetBranceId = station['branchId'];
+                                                                              targetLat = station['latitude'];
+                                                                              targetLong = station['longitude'];
+                                                                            });
+
+                                                                            print("Distance to ${station['branchId']}: ${distance} meters");
                                                                             nearbyStations.add(station['name']);
                                                                           }
                                                                         }
@@ -403,66 +420,100 @@ class _HomeUserPageState extends State<HomeUserPage> {
                                                                                         mainAxisSize: MainAxisSize.min,
                                                                                         children: <Widget>[
                                                                                           const Text(
-                                                                                            'เลือกสถานีใกล้คุณ',
+                                                                                            'เลือกสถานีรถไฟใกล้คุณ',
                                                                                             style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
                                                                                           ),
                                                                                           ...nearbyStations
                                                                                               .map((stationName) => Padding(
                                                                                                     padding: const EdgeInsets.fromLTRB(16, 20, 5, 10),
-                                                                                                    child: Container(
-                                                                                                      height: 60,
-                                                                                                      width: Get.width * 1,
-                                                                                                      decoration: BoxDecoration(
-                                                                                                        color: primaryColor,
-                                                                                                        borderRadius: const BorderRadius.all(
-                                                                                                          Radius.circular(16),
+                                                                                                    child: GestureDetector(
+                                                                                                      onTap: () async {
+                                                                                                        final cameras = await availableCameras();
+                                                                                                        Get.to(CameraPage(
+                                                                                                          cameras: cameras,
+                                                                                                          branchId: targetBranceId,
+                                                                                                          branchLatitude: targetLat,
+                                                                                                          branchLongtitude: targetLong,
+                                                                                                        ));
+                                                                                                        // !
+                                                                                                        //     .then((value) {
+                                                                                                        //   if (srtController.selectedImage != null) {
+                                                                                                        //     int sizeInBytes = File(srtController.selectedImage!.path).lengthSync();
+                                                                                                        //     if (sizeInBytes > 2097152) {
+                                                                                                              // Get.dialog(
+                                                                                                              //   SMEAlertDialog(
+                                                                                                              //     titleMessage: "แจ้งเตือน",
+                                                                                                              //     contentMessage: "ไฟล์ภาพมีขนาดใหญ่กว่าที่กำหนด",
+                                                                                                              //     submitButton: true,
+                                                                                                              //     submitText: "ตกลง",
+                                                                                                              //     onSubmit: () {
+                                                                                                              //       Get.back();
+                                                                                                              //     },
+                                                                                                              //   ),
+                                                                                                              // );
+                                                                                                        //     } else {
+                                                                                                        //       setState(() {
+                                                                                                        //         File(srtController.selectedImage!.path);
+                                                                                                        //       });
+                                                                                                        //     }
+                                                                                                        //   }
+                                                                                                        // });
+                                                                                                      },
+                                                                                                      child: Container(
+                                                                                                        height: 60,
+                                                                                                        width: Get.width * 1,
+                                                                                                        decoration: BoxDecoration(
+                                                                                                          color: primaryColor,
+                                                                                                          borderRadius: const BorderRadius.all(
+                                                                                                            Radius.circular(16),
+                                                                                                          ),
                                                                                                         ),
-                                                                                                      ),
-                                                                                                      child: Stack(
-                                                                                                        children: [
-                                                                                                          Align(
-                                                                                                            alignment: Alignment.bottomLeft,
-                                                                                                            child: Padding(
-                                                                                                              padding: const EdgeInsets.only(left: 15.0, bottom: 15),
-                                                                                                              child: Container(
-                                                                                                                height: 30,
-                                                                                                                width: 30,
-                                                                                                                decoration: const BoxDecoration(
-                                                                                                                  color: Colors.white,
-                                                                                                                  borderRadius: BorderRadius.all(
-                                                                                                                    Radius.circular(16),
+                                                                                                        child: Stack(
+                                                                                                          children: [
+                                                                                                            Align(
+                                                                                                              alignment: Alignment.bottomLeft,
+                                                                                                              child: Padding(
+                                                                                                                padding: const EdgeInsets.only(left: 15.0, bottom: 15),
+                                                                                                                child: Container(
+                                                                                                                  height: 30,
+                                                                                                                  width: 30,
+                                                                                                                  decoration: const BoxDecoration(
+                                                                                                                    color: Colors.white,
+                                                                                                                    borderRadius: BorderRadius.all(
+                                                                                                                      Radius.circular(16),
+                                                                                                                    ),
+                                                                                                                  ),
+                                                                                                                  child: Icon(
+                                                                                                                    FontAwesomeIcons.train,
+                                                                                                                    color: Colors.red[700],
+                                                                                                                    size: 19,
                                                                                                                   ),
                                                                                                                 ),
-                                                                                                                child: Icon(
-                                                                                                                  FontAwesomeIcons.train,
-                                                                                                                  color: Colors.red[700],
-                                                                                                                  size: 19,
+                                                                                                              ),
+                                                                                                            ),
+                                                                                                            Padding(
+                                                                                                              padding: const EdgeInsets.only(
+                                                                                                                top: 8,
+                                                                                                                right: 8,
+                                                                                                                bottom: 8,
+                                                                                                                left: 70,
+                                                                                                              ),
+                                                                                                              child: Align(
+                                                                                                                alignment: Alignment.centerLeft,
+                                                                                                                child: Text(
+                                                                                                                  "สถานีรถไฟ$stationName",
+                                                                                                                  overflow: TextOverflow.fade,
+                                                                                                                  maxLines: 1,
+                                                                                                                  style: const TextStyle(
+                                                                                                                    color: Colors.white,
+                                                                                                                    fontSize: 17,
+                                                                                                                    fontWeight: FontWeight.bold,
+                                                                                                                  ),
                                                                                                                 ),
                                                                                                               ),
                                                                                                             ),
-                                                                                                          ),
-                                                                                                          Padding(
-                                                                                                            padding: const EdgeInsets.only(
-                                                                                                              top: 8,
-                                                                                                              right: 8,
-                                                                                                              bottom: 8,
-                                                                                                              left: 70,
-                                                                                                            ),
-                                                                                                            child: Align(
-                                                                                                              alignment: Alignment.centerLeft,
-                                                                                                              child: Text(
-                                                                                                                "$stationName",
-                                                                                                                overflow: TextOverflow.fade,
-                                                                                                                maxLines: 1,
-                                                                                                                style: const TextStyle(
-                                                                                                                  color: Colors.white,
-                                                                                                                  fontSize: 17,
-                                                                                                                  fontWeight: FontWeight.bold,
-                                                                                                                ),
-                                                                                                              ),
-                                                                                                            ),
-                                                                                                          ),
-                                                                                                        ],
+                                                                                                          ],
+                                                                                                        ),
                                                                                                       ),
                                                                                                     ),
                                                                                                   ))

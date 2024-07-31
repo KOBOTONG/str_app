@@ -1,82 +1,476 @@
 List<Map<String, dynamic>> stations = [
-  {"name": "Bangkok Railway Station", "latitude": 13.736717, "longitude": 100.516284, "radius": 20.0},
-  {"name": "Chiang Mai Railway Station", "latitude": 18.796143, "longitude": 98.999594, "radius": 20.0},
-  {"name": "Ayutthaya Railway Station", "latitude": 14.353212, "longitude": 100.588722, "radius": 20.0},
-  {"name": "Surat Thani Railway Station", "latitude": 9.130615, "longitude": 99.321403, "radius": 20.0},
-  {"name": "Nakhon Ratchasima Railway Station", "latitude": 14.978688, "longitude": 102.097862, "radius": 20.0},
-  {"name": "Hat Yai Railway Station", "latitude": 7.003960055360843, "longitude": 100.46766653552667, "radius": 20.0},
-  {"name": "Ubon Ratchathani Railway Station", "latitude": 15.251251, "longitude": 104.850237, "radius": 20.0},
-  {"name": "Udon Thani Railway Station", "latitude": 17.403789, "longitude": 102.793139, "radius": 20.0},
-  {"name": "Khon Kaen Railway Station", "latitude": 16.442951, "longitude": 102.827589, "radius": 20.0},
-  {"name": "Nakhon Si Thammarat Railway Station", "latitude": 8.430396, "longitude": 99.963794, "radius": 20.0},
-  {"name": "Chumphon Railway Station", "latitude": 10.494651, "longitude": 99.180019, "radius": 20.0},
-  {"name": "Lampang Railway Station", "latitude": 18.276654, "longitude": 99.504513, "radius": 20.0},
-  {"name": "Phitsanulok Railway Station", "latitude": 16.821083, "longitude": 100.259594, "radius": 20.0},
-  {"name": "Lopburi Railway Station", "latitude": 14.798193, "longitude": 100.611476, "radius": 20.0},
-  {"name": "Phetchaburi Railway Station", "latitude": 13.106598, "longitude": 99.941945, "radius": 20.0},
-  {"name": "Prachuap Khiri Khan Railway Station", "latitude": 11.803702, "longitude": 99.796013, "radius": 20.0},
-  {"name": "Trat Railway Station", "latitude": 12.234732, "longitude": 102.519188, "radius": 20.0},
-  {"name": "Chon Buri Railway Station", "latitude": 13.361143, "longitude": 100.984673, "radius": 20.0},
-  {"name": "Rayong Railway Station", "latitude": 12.707311, "longitude": 101.142618, "radius": 20.0},
-  {"name": "Nakhon Pathom Railway Station", "latitude": 13.817249, "longitude": 100.045676, "radius": 20.0},
-  {"name": "Samut Sakhon Railway Station", "latitude": 13.547005, "longitude": 100.276642, "radius": 20.0},
-  {"name": "Samut Prakan Railway Station", "latitude": 13.599096, "longitude": 100.599344, "radius": 20.0},
-  {"name": "Pathum Thani Railway Station", "latitude": 14.020423, "longitude": 100.525993, "radius": 20.0},
-  {"name": "Nakhon Nayok Railway Station", "latitude": 14.205612, "longitude": 101.214184, "radius": 20.0},
-  {"name": "Saraburi Railway Station", "latitude": 14.528928, "longitude": 100.911993, "radius": 20.0},
-  {"name": "Chachoengsao Railway Station", "latitude": 13.689382, "longitude": 101.074882, "radius": 20.0},
-  {"name": "Ratchaburi Railway Station", "latitude": 13.528424, "longitude": 99.812584, "radius": 20.0},
-  {"name": "Kanchanaburi Railway Station", "latitude": 14.038378, "longitude": 99.526085, "radius": 20.0},
-  {"name": "Sa Kaeo Railway Station", "latitude": 13.823054, "longitude": 102.064448, "radius": 20.0},
-  {"name": "Prachinburi Railway Station", "latitude": 14.055589, "longitude": 101.373602, "radius": 20.0},
-  {"name": "Nakhon Sawan Railway Station", "latitude": 15.703258, "longitude": 100.137565, "radius": 20.0},
-  {"name": "Kamphaeng Phet Railway Station", "latitude": 16.460722, "longitude": 99.531799, "radius": 20.0},
-  {"name": "Phichit Railway Station", "latitude": 16.438753, "longitude": 100.349316, "radius": 20.0},
-  {"name": "Phrae Railway Station", "latitude": 18.143618, "longitude": 100.141971, "radius": 20.0},
-  {"name": "Nan Railway Station", "latitude": 18.775446, "longitude": 100.773476, "radius": 20.0},
-  {"name": "Uttaradit Railway Station", "latitude": 17.630520, "longitude": 100.099294, "radius": 20.0},
-  {"name": "Tak Railway Station", "latitude": 16.880625, "longitude": 99.127795, "radius": 20.0},
-  {"name": "Sukhothai Railway Station", "latitude": 17.007982, "longitude": 99.823452, "radius": 20.0},
-  {"name": "Phayao Railway Station", "latitude": 19.169860, "longitude": 99.903255, "radius": 20.0},
-  {"name": "Mae Hong Son Railway Station", "latitude": 19.301290, "longitude": 97.968343, "radius": 20.0},
-  {"name": "Lamphun Railway Station", "latitude": 18.579052, "longitude": 99.008722, "radius": 20.0},
-  {"name": "Chiang Rai Railway Station", "latitude": 19.908727, "longitude": 99.832805, "radius": 20.0},
-  {"name": "Kalasin Railway Station", "latitude": 16.432108, "longitude": 103.506945, "radius": 20.0},
-  {"name": "Maha Sarakham Railway Station", "latitude": 16.184479, "longitude": 103.298948, "radius": 20.0},
-  {"name": "Roi Et Railway Station", "latitude": 16.050055, "longitude": 103.652015, "radius": 20.0},
-  {"name": "Sakon Nakhon Railway Station", "latitude": 17.149251, "longitude": 104.149291, "radius": 20.0},
-  {"name": "Nakhon Phanom Railway Station", "latitude": 17.395679, "longitude": 104.769704, "radius": 20.0},
-  {"name": "Mukdahan Railway Station", "latitude": 16.544288, "longitude": 104.718842, "radius": 20.0},
-  {"name": "Yasothon Railway Station", "latitude": 15.793102, "longitude": 104.145189, "radius": 20.0},
-  {"name": "Chaiyaphum Railway Station", "latitude": 15.807606, "longitude": 102.031536, "radius": 20.0},
-  {"name": "Amnat Charoen Railway Station", "latitude": 15.851048, "longitude": 104.629132, "radius": 20.0},
-  {"name": "Bueng Kan Railway Station", "latitude": 18.360911, "longitude": 103.646502, "radius": 20.0},
-  {"name": "Chai Nat Railway Station", "latitude": 15.184243, "longitude": 100.126014, "radius": 20.0},
-  {"name": "Sing Buri Railway Station", "latitude": 14.887396, "longitude": 100.399231, "radius": 20.0},
-  {"name": "Ang Thong Railway Station", "latitude": 14.589605, "longitude": 100.459285, "radius": 20.0},
-  {"name": "Chainat Railway Station", "latitude": 15.184243, "longitude": 100.126014, "radius": 20.0},
-  {"name": "Lop Buri Railway Station", "latitude": 14.798193, "longitude": 100.611476, "radius": 20.0},
-  {"name": "Nonthaburi Railway Station", "latitude": 13.862112, "longitude": 100.514352, "radius": 20.0},
-  {"name": "Samut Songkhram Railway Station", "latitude": 13.413436, "longitude": 99.977426, "radius": 20.0},
-  {"name": "Suphan Buri Railway Station", "latitude": 14.472926, "longitude": 100.117042, "radius": 20.0},
-  {"name": "Pattani Railway Station", "latitude": 6.869504, "longitude": 101.250484, "radius": 20.0},
-  {"name": "Yala Railway Station", "latitude": 6.540507, "longitude": 101.281812, "radius": 20.0},
-  {"name": "Narathiwat Railway Station", "latitude": 6.429424, "longitude": 101.800961, "radius": 20.0},
-  {"name": "Satun Railway Station", "latitude": 6.623304, "longitude": 100.066767, "radius": 20.0},
-  {"name": "Songkhla Railway Station", "latitude": 7.189855, "longitude": 100.598700, "radius": 20.0},
-  {"name": "Trang Railway Station", "latitude": 7.556314, "longitude": 99.611647, "radius": 20.0},
-  {"name": "Phatthalung Railway Station", "latitude": 7.617170, "longitude": 100.074967, "radius": 20.0},
-  {"name": "Krabi Railway Station", "latitude": 8.086299, "longitude": 98.906283, "radius": 20.0},
-  {"name": "Phang Nga Railway Station", "latitude": 8.451962, "longitude": 98.525947, "radius": 20.0},
-  {"name": "Phuket Railway Station", "latitude": 7.880447, "longitude": 98.392281, "radius": 20.0},
-  {"name": "Ranong Railway Station", "latitude": 9.963305, "longitude": 98.634759, "radius": 20.0},
-  {"name": "Satun Railway Station", "latitude": 6.623304, "longitude": 100.066767, "radius": 20.0},
-  {"name": "Phatthalung Railway Station", "latitude": 7.617170, "longitude": 100.074967, "radius": 20.0},
-  {"name": "Nakhon Si Thammarat Railway Station", "latitude": 8.430396, "longitude": 99.963794, "radius": 20.0},
-  {"name": "Surat Thani Railway Station", "latitude": 9.130615, "longitude": 99.321403, "radius": 20.0},
-  {"name": "Chumphon Railway Station", "latitude": 10.494651, "longitude": 99.180019, "radius": 20.0},
-  {"name": "Ratchaburi Railway Station", "latitude": 13.528424, "longitude": 99.812584, "radius": 20.0},
-  {"name": "Kanchanaburi Railway Station", "latitude": 14.038378, "longitude": 99.526085, "radius": 20.0},
-  {"name": "Suphan Buri Railway Station", "latitude": 14.472926, "longitude": 100.117042, "radius": 20.0}
+  {
+    "name": "Bangkok Railway Station",
+    "latitude": 13.736717,
+    "longitude": 100.516284,
+    "radius": 20.0
+  },
+  {
+    "name": "Chiang Mai Railway Station",
+    "latitude": 18.796143,
+    "longitude": 98.999594,
+    "radius": 20.0
+  },
+  {
+    "name": "Ayutthaya Railway Station",
+    "latitude": 14.353212,
+    "longitude": 100.588722,
+    "radius": 20.0
+  },
+  {
+    "name": "Surat Thani Railway Station",
+    "latitude": 9.130615,
+    "longitude": 99.321403,
+    "radius": 20.0
+  },
+  {
+    "name": "Nakhon Ratchasima Railway Station",
+    "latitude": 14.978688,
+    "longitude": 102.097862,
+    "radius": 20.0
+  },
+  {
+    "name": "Hat Yai Railway Station",
+    "latitude": 7.003960055360843,
+    "longitude": 100.46766653552667,
+    "radius": 20.0
+  },
+  {
+    "name": "Ubon Ratchathani Railway Station",
+    "latitude": 15.251251,
+    "longitude": 104.850237,
+    "radius": 20.0
+  },
+  {
+    "name": "Udon Thani Railway Station",
+    "latitude": 17.403789,
+    "longitude": 102.793139,
+    "radius": 20.0
+  },
+  {
+    "name": "Khon Kaen Railway Station",
+    "latitude": 16.442951,
+    "longitude": 102.827589,
+    "radius": 20.0
+  },
+  {
+    "name": "Nakhon Si Thammarat Railway Station",
+    "latitude": 8.430396,
+    "longitude": 99.963794,
+    "radius": 20.0
+  },
+  {
+    "name": "Chumphon Railway Station",
+    "latitude": 10.503063677776744,
+    "longitude": 99.17596177746798,
+    "radius": 20.0
+  },
+  {
+    "name": "Lampang Railway Station",
+    "latitude": 18.276654,
+    "longitude": 99.504513,
+    "radius": 20.0
+  },
+  {
+    "name": "Phitsanulok Railway Station",
+    "latitude": 16.821083,
+    "longitude": 100.259594,
+    "radius": 20.0
+  },
+  {
+    "name": "Lopburi Railway Station",
+    "latitude": 14.798193,
+    "longitude": 100.611476,
+    "radius": 20.0
+  },
+  {
+    "name": "Phetchaburi Railway Station",
+    "latitude": 13.106598,
+    "longitude": 99.941945,
+    "radius": 20.0
+  },
+  {
+    "name": "Prachuap Khiri Khan Railway Station",
+    "latitude": 11.803702,
+    "longitude": 99.796013,
+    "radius": 20.0
+  },
+  {
+    "name": "Trat Railway Station",
+    "latitude": 12.234732,
+    "longitude": 102.519188,
+    "radius": 20.0
+  },
+  {
+    "name": "Chon Buri Railway Station",
+    "latitude": 13.361143,
+    "longitude": 100.984673,
+    "radius": 20.0
+  },
+  {
+    "name": "Rayong Railway Station",
+    "latitude": 12.707311,
+    "longitude": 101.142618,
+    "radius": 20.0
+  },
+  {
+    "name": "Nakhon Pathom Railway Station",
+    "latitude": 13.817249,
+    "longitude": 100.045676,
+    "radius": 20.0
+  },
+  {
+    "name": "Samut Sakhon Railway Station",
+    "latitude": 13.547005,
+    "longitude": 100.276642,
+    "radius": 20.0
+  },
+  {
+    "name": "Samut Prakan Railway Station",
+    "latitude": 13.599096,
+    "longitude": 100.599344,
+    "radius": 20.0
+  },
+  {
+    "name": "Pathum Thani Railway Station",
+    "latitude": 14.020423,
+    "longitude": 100.525993,
+    "radius": 20.0
+  },
+  {
+    "name": "Nakhon Nayok Railway Station",
+    "latitude": 14.205612,
+    "longitude": 101.214184,
+    "radius": 20.0
+  },
+  {
+    "name": "Saraburi Railway Station",
+    "latitude": 14.528928,
+    "longitude": 100.911993,
+    "radius": 20.0
+  },
+  {
+    "name": "Chachoengsao Railway Station",
+    "latitude": 13.689382,
+    "longitude": 101.074882,
+    "radius": 20.0
+  },
+  {
+    "name": "Ratchaburi Railway Station",
+    "latitude": 13.528424,
+    "longitude": 99.812584,
+    "radius": 20.0
+  },
+  {
+    "name": "Kanchanaburi Railway Station",
+    "latitude": 14.038378,
+    "longitude": 99.526085,
+    "radius": 20.0
+  },
+  {
+    "name": "Sa Kaeo Railway Station",
+    "latitude": 13.823054,
+    "longitude": 102.064448,
+    "radius": 20.0
+  },
+  {
+    "name": "Prachinburi Railway Station",
+    "latitude": 14.055589,
+    "longitude": 101.373602,
+    "radius": 20.0
+  },
+  {
+    "name": "Nakhon Sawan Railway Station",
+    "latitude": 15.703258,
+    "longitude": 100.137565,
+    "radius": 20.0
+  },
+  {
+    "name": "Kamphaeng Phet Railway Station",
+    "latitude": 16.460722,
+    "longitude": 99.531799,
+    "radius": 20.0
+  },
+  {
+    "name": "Phichit Railway Station",
+    "latitude": 16.438753,
+    "longitude": 100.349316,
+    "radius": 20.0
+  },
+  {
+    "name": "Phrae Railway Station",
+    "latitude": 18.143618,
+    "longitude": 100.141971,
+    "radius": 20.0
+  },
+  {
+    "name": "Nan Railway Station",
+    "latitude": 18.775446,
+    "longitude": 100.773476,
+    "radius": 20.0
+  },
+  {
+    "name": "Uttaradit Railway Station",
+    "latitude": 17.630520,
+    "longitude": 100.099294,
+    "radius": 20.0
+  },
+  {
+    "name": "Tak Railway Station",
+    "latitude": 16.880625,
+    "longitude": 99.127795,
+    "radius": 20.0
+  },
+  {
+    "name": "Sukhothai Railway Station",
+    "latitude": 17.007982,
+    "longitude": 99.823452,
+    "radius": 20.0
+  },
+  {
+    "name": "Phayao Railway Station",
+    "latitude": 19.169860,
+    "longitude": 99.903255,
+    "radius": 20.0
+  },
+  {
+    "name": "Mae Hong Son Railway Station",
+    "latitude": 19.301290,
+    "longitude": 97.968343,
+    "radius": 20.0
+  },
+  {
+    "name": "Lamphun Railway Station",
+    "latitude": 18.579052,
+    "longitude": 99.008722,
+    "radius": 20.0
+  },
+  {
+    "name": "Chiang Rai Railway Station",
+    "latitude": 19.908727,
+    "longitude": 99.832805,
+    "radius": 20.0
+  },
+  {
+    "name": "Kalasin Railway Station",
+    "latitude": 16.432108,
+    "longitude": 103.506945,
+    "radius": 20.0
+  },
+  {
+    "name": "Maha Sarakham Railway Station",
+    "latitude": 16.184479,
+    "longitude": 103.298948,
+    "radius": 20.0
+  },
+  {
+    "name": "Roi Et Railway Station",
+    "latitude": 16.050055,
+    "longitude": 103.652015,
+    "radius": 20.0
+  },
+  {
+    "name": "Sakon Nakhon Railway Station",
+    "latitude": 17.149251,
+    "longitude": 104.149291,
+    "radius": 20.0
+  },
+  {
+    "name": "Nakhon Phanom Railway Station",
+    "latitude": 17.395679,
+    "longitude": 104.769704,
+    "radius": 20.0
+  },
+  {
+    "name": "Mukdahan Railway Station",
+    "latitude": 16.544288,
+    "longitude": 104.718842,
+    "radius": 20.0
+  },
+  {
+    "name": "Yasothon Railway Station",
+    "latitude": 15.793102,
+    "longitude": 104.145189,
+    "radius": 20.0
+  },
+  {
+    "name": "Chaiyaphum Railway Station",
+    "latitude": 15.807606,
+    "longitude": 102.031536,
+    "radius": 20.0
+  },
+  {
+    "name": "Amnat Charoen Railway Station",
+    "latitude": 15.851048,
+    "longitude": 104.629132,
+    "radius": 20.0
+  },
+  {
+    "name": "Bueng Kan Railway Station",
+    "latitude": 18.360911,
+    "longitude": 103.646502,
+    "radius": 20.0
+  },
+  {
+    "name": "Chai Nat Railway Station",
+    "latitude": 15.184243,
+    "longitude": 100.126014,
+    "radius": 20.0
+  },
+  {
+    "name": "Sing Buri Railway Station",
+    "latitude": 14.887396,
+    "longitude": 100.399231,
+    "radius": 20.0
+  },
+  {
+    "name": "Ang Thong Railway Station",
+    "latitude": 14.589605,
+    "longitude": 100.459285,
+    "radius": 20.0
+  },
+  {
+    "name": "Chainat Railway Station",
+    "latitude": 15.184243,
+    "longitude": 100.126014,
+    "radius": 20.0
+  },
+  {
+    "name": "Lop Buri Railway Station",
+    "latitude": 14.798193,
+    "longitude": 100.611476,
+    "radius": 20.0
+  },
+  {
+    "name": "Nonthaburi Railway Station",
+    "latitude": 13.862112,
+    "longitude": 100.514352,
+    "radius": 20.0
+  },
+  {
+    "name": "Samut Songkhram Railway Station",
+    "latitude": 13.413436,
+    "longitude": 99.977426,
+    "radius": 20.0
+  },
+  {
+    "name": "Suphan Buri Railway Station",
+    "latitude": 14.472926,
+    "longitude": 100.117042,
+    "radius": 20.0
+  },
+  {
+    "name": "Pattani Railway Station",
+    "latitude": 6.869504,
+    "longitude": 101.250484,
+    "radius": 20.0
+  },
+  {
+    "name": "Yala Railway Station",
+    "latitude": 6.540507,
+    "longitude": 101.281812,
+    "radius": 20.0
+  },
+  {
+    "name": "Narathiwat Railway Station",
+    "latitude": 6.429424,
+    "longitude": 101.800961,
+    "radius": 20.0
+  },
+  {
+    "name": "Satun Railway Station",
+    "latitude": 6.623304,
+    "longitude": 100.066767,
+    "radius": 20.0
+  },
+  {
+    "name": "Songkhla Railway Station",
+    "latitude": 7.189855,
+    "longitude": 100.598700,
+    "radius": 20.0
+  },
+  {
+    "name": "Trang Railway Station",
+    "latitude": 7.556314,
+    "longitude": 99.611647,
+    "radius": 20.0
+  },
+  {
+    "name": "Phatthalung Railway Station",
+    "latitude": 7.617170,
+    "longitude": 100.074967,
+    "radius": 20.0
+  },
+  {
+    "name": "Krabi Railway Station",
+    "latitude": 8.086299,
+    "longitude": 98.906283,
+    "radius": 20.0
+  },
+  {
+    "name": "Phang Nga Railway Station",
+    "latitude": 8.451962,
+    "longitude": 98.525947,
+    "radius": 20.0
+  },
+  {
+    "name": "Phuket Railway Station",
+    "latitude": 7.880447,
+    "longitude": 98.392281,
+    "radius": 20.0
+  },
+  {
+    "name": "Ranong Railway Station",
+    "latitude": 9.963305,
+    "longitude": 98.634759,
+    "radius": 20.0
+  },
+  {
+    "name": "Satun Railway Station",
+    "latitude": 6.623304,
+    "longitude": 100.066767,
+    "radius": 20.0
+  },
+  {
+    "name": "Phatthalung Railway Station",
+    "latitude": 7.617170,
+    "longitude": 100.074967,
+    "radius": 20.0
+  },
+  {
+    "name": "Nakhon Si Thammarat Railway Station",
+    "latitude": 8.430396,
+    "longitude": 99.963794,
+    "radius": 20.0
+  },
+  {
+    "name": "Surat Thani Railway Station",
+    "latitude": 9.130615,
+    "longitude": 99.321403,
+    "radius": 20.0
+  },
+  {
+    "name": "Chumphon Railway Station",
+    "latitude": 10.494651,
+    "longitude": 99.180019,
+    "radius": 20.0
+  },
+  {
+    "name": "Ratchaburi Railway Station",
+    "latitude": 13.528424,
+    "longitude": 99.812584,
+    "radius": 20.0
+  },
+  {
+    "name": "Kanchanaburi Railway Station",
+    "latitude": 14.038378,
+    "longitude": 99.526085,
+    "radius": 20.0
+  },
+  {
+    "name": "Suphan Buri Railway Station",
+    "latitude": 14.472926,
+    "longitude": 100.117042,
+    "radius": 20.0
+  }
 ];
-

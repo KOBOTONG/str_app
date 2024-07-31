@@ -34,6 +34,7 @@ class BaseService {
     var client = http.Client();
     try {
       var url = Uri.parse("${BaseService().getServerApiUrl()}/server/datetime");
+      print(url);
       final response = await client.get(url);
       return utf8.decode(response.bodyBytes);
     } catch (e) {
