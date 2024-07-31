@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:intl/intl.dart';
 import 'package:srt_app/str/controller/authen_controller.dart';
 import 'package:srt_app/str/model/stations_model.dart';
 import 'package:srt_app/str/model/user_time_stamp_model.dart';
@@ -13,6 +14,7 @@ class UserController extends GetxController {
   var stationsModel = StationsModel().obs;
   var userTimeStampModel = UserTimeStampModel().obs;
 
+  var selectedDate = "".obs;
   Future<StationsModel> fetchBranch() async {
     try {
       String jsonData = await UserService().fetchBranch(
@@ -26,14 +28,17 @@ class UserController extends GetxController {
     return stationsModel.value;
   }
 
-  Future<UserTimeStampModel> fetchTimeStamp() async {
+  Future<UserTimeStampModel> fetchTimeStamp({date}) async {
     try {
+     
       String jsonData = await UserService().fetchTimeStamp(
           token: authenController.loginModel.value.data!.token ?? "",
-          date: "31/01/2024");
+          date: date != null
+              ? DateFormat('dd/MM/yyyy').format(date)
+              : DateFormat('dd/MM/yyyy').format(DateTime.now()));
       userTimeStampModel.value =
           UserTimeStampModel.fromJson(json.decode(jsonData));
-          print(json.decode(jsonData));
+      // print(json.decode(jsonData));
     } catch (e) {
       if (kDebugMode) {
         print(e);

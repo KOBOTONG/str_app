@@ -19,6 +19,7 @@ class UserService {
 
   fetchTimeStamp({required token, required date}) async {
     try {
+       print(date);
       var response = await BaseService().postReponseByJson(
           path: "/emp/timestamp", data: {"date": date}, token: token);
       if (response != null) {

@@ -84,33 +84,7 @@ class StationsModelData {
 }
 
 class StationsModel {
-/*
-{
-  "data": [
-    {
-      "branch_id": "82E1B1CA-1E5A-4043-B06F-385D7968D9A4",
-      "company_id": "01634FD5-94A9-4C00-BE9F-A547A8699986",
-      "branch_name": "เตาปูน",
-      "branch_detail": null,
-      "branch_latitude": "13.797412400000001",
-      "branch_longitude": "100.2347819",
-      "branch_location_radius": "20.0",
-      "branch_status": "0",
-      "branch_is_delete": "0",
-      "branch_created_by": null,
-      "branch_created_at": null,
-      "branch_updated_by": null,
-      "branch_updated_at": null
-    }
-  ],
-  "message": "",
-  "message_ex": "",
-  "success": true,
-  "errors": null
-} 
-*/
-
-  List<StationsModelData?>? data;
+  List<StationsModelData>? data;
   String? message;
   String? messageEx;
   bool? success;
@@ -123,29 +97,22 @@ class StationsModel {
     this.success,
     this.errors,
   });
+
   StationsModel.fromJson(Map<String, dynamic> json) {
-  if (json['data'] != null) {
-  final v = json['data'];
-  final arr0 = <StationsModelData>[];
-  v.forEach((v) {
-  arr0.add(StationsModelData.fromJson(v));
-  });
-    this.data = arr0;
+    if (json['data'] != null) {
+      final v = json['data'] as List<dynamic>;
+      data = v.map((item) => StationsModelData.fromJson(item as Map<String, dynamic>)).toList();
     }
     message = json['message']?.toString();
     messageEx = json['message_ex']?.toString();
-    success = json['success'];
+    success = json['success'] as bool?;
     errors = json['errors']?.toString();
   }
+
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     if (this.data != null) {
-      final v = this.data;
-      final arr0 = [];
-  v!.forEach((v) {
-  arr0.add(v!.toJson());
-  });
-      data['data'] = arr0;
+      data['data'] = this.data!.map((item) => item.toJson()).toList();
     }
     data['message'] = message;
     data['message_ex'] = messageEx;

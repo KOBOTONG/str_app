@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:quiver/time.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:srt_app/str/constants/calendar_constant.dart';
+import 'package:srt_app/str/controller/user_controller.dart';
 
 class SMEHorizontalCalendar extends StatefulWidget {
   final Color selectedColor;
@@ -19,7 +20,7 @@ class SMEHorizontalCalendar extends StatefulWidget {
 }
 
 class _SMEHorizontalCalendarState extends State<SMEHorizontalCalendar> {
-  // var userController = Get.put(UserController());
+  var userController = Get.put(UserController());
 
   // TO tracking date
   DateTime selectedDate = DateTime.now();
@@ -44,7 +45,7 @@ class _SMEHorizontalCalendarState extends State<SMEHorizontalCalendar> {
 
   _SMEHorizontalCalendarState() {
     _getMonth();
-    // userController.selectedDate.value =
+    userController.selectedDate.value =
         DateFormat('yyyy-MM-dd').format(selectedDate);
   }
 
@@ -87,7 +88,7 @@ class _SMEHorizontalCalendarState extends State<SMEHorizontalCalendar> {
       currentMonthSelectedIndex,
       currentDateSelectedIndex + 1,
     );
-    // userController.selectedDate.value =
+    userController.selectedDate.value =
         DateFormat('yyyy-MM-dd').format(selectedDate);
   }
 
@@ -176,7 +177,7 @@ class _SMEHorizontalCalendarState extends State<SMEHorizontalCalendar> {
                         updateSelectedDate(selectedDate.year);
                       });
                       _moveToDayIndex(index);
-                      // userController.fetchTimestamp(date: selectedDate);
+                      userController.fetchTimeStamp(date: selectedDate);
                     },
                     child: Container(
                       height: 80,
@@ -271,7 +272,7 @@ class _SMEHorizontalCalendarState extends State<SMEHorizontalCalendar> {
         currentMonthNext = month + 1 > 12 ? 1 : month + 1;
         setCurrentYearMonth(int.parse(year), currentMonthSelectedIndex);
       });
-      // userController.fetchTimestamp(date: selectedDate);
+      userController.fetchTimeStamp(date: selectedDate);
     }
   }
 
@@ -290,7 +291,7 @@ class _SMEHorizontalCalendarState extends State<SMEHorizontalCalendar> {
         currentMonthNext = month + 1 > 12 ? 1 : month + 1;
         setCurrentYearMonth(int.parse(year), currentMonthSelectedIndex);
       });
-      // userController.fetchTimestamp(date: selectedDate);
+      userController.fetchTimeStamp(date: selectedDate);
     }
   }
 }
