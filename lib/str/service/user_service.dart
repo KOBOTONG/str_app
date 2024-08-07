@@ -7,7 +7,7 @@ class UserService {
   fetchBranch({required token}) async {
     try {
       var response = await BaseService()
-          .getResponse(path: "/emp/branch/fetch", token: token);
+          .getResponse(path: "/emp/company_station/fetch", token: token);
       if (response != null) {
         return utf8.decode(response.bodyBytes);
       }
@@ -44,17 +44,18 @@ class UserService {
       print(latitude);
       print(longitude);
       print(branchId);
-      print(base64imgTimeStamp);
+      // print(base64imgTimeStamp);
 
       var response = await BaseService().postReponseByJson(
           path: "/emp/timestamp/location/create",
           data: {
             "latitude": latitude,
             "longitude": longitude,
-            "branch_id": branchId,
+            "station_id": branchId,
             "img": base64imgTimeStamp
           },
           token: token);
+          // print(da)
       if (response != null) {
         return utf8.decode(response.bodyBytes);
       }

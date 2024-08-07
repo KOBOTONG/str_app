@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smartrefresh/smartrefresh.dart';
 import 'package:srt_app/str/constants/color_constants.dart';
 import 'package:intl/intl.dart';
 import 'package:srt_app/str/controller/authen_controller.dart';
@@ -15,7 +16,6 @@ import 'package:srt_app/str/controller/srt_controller.dart';
 import 'package:srt_app/str/controller/user_controller.dart';
 import 'package:srt_app/str/page/camera_page.dart';
 import 'package:srt_app/str/page/login_page.dart';
-import 'package:srt_app/str/widgets/loading.dart';
 import 'package:srt_app/str/widgets/sme_horizontal_calendar.dart';
 import 'package:camera/camera.dart';
 
@@ -31,19 +31,49 @@ late double _scrollAlignment;
 class _HomeUserPageState extends State<HomeUserPage>
     with SingleTickerProviderStateMixin {
   _HomeUserPageState() {
-    userController.fetchBranch().then((value) => {_loading.value = false});
-    userController.fetchTimeStamp().then((value) => {_loading.value = false});
+    userController.fetchBranch();
+    userController.fetchTimeStamp().then((value) {
+      _loading.value = false;
+      isIn1AtNull =
+          userController.userTimeStampModel.value.data?.in_1At == null;
+      isOut1AtNull =
+          userController.userTimeStampModel.value.data?.out_1At == "-";
+      if (!isIn1AtNull && !isOut1AtNull) {
+        containerColor = Colors.grey;
+        textColor = Colors.white;
+        displayText = "ครบเวลา";
+        isTap = false;
+      } else if (isIn1AtNull) {
+        containerColor = Color(0xFFFFC452);
+        textColor = primaryColor;
+        displayText = "เข้างาน";
+      } else {
+        containerColor = primaryColor;
+        textColor = Color(0xFFFFC452);
+        displayText = "ออกงาน";
+      }
+    });
     serverController.checkPermission();
     serverController
         .fetchServerTime()
         .then((value) => {_loading.value = false});
   }
+  bool _isBottomSheetVisible = false;
 
   final LocationSettings locationSettings = const LocationSettings(
     accuracy: LocationAccuracy.high,
     distanceFilter: 100,
   );
   StreamSubscription<Position>? positionStreamSubscription;
+  final RefreshController _refreshController = RefreshController();
+  void onRefresh() async {
+    await Future.delayed(const Duration(milliseconds: 1000));
+
+    userController
+        .fetchTimeStamp()
+        .then((value) => _refreshController.refreshCompleted());
+  }
+
   // late double lng;
   // late double log;
   late double targetLat;
@@ -51,6 +81,14 @@ class _HomeUserPageState extends State<HomeUserPage>
   late String targetBranceId;
   late double tarketPosition;
   final _loading = true.obs;
+  bool isIn1AtNull = true;
+  bool isOut1AtNull = true;
+  bool isTap = true;
+
+  Color? containerColor;
+  Color? textColor;
+  String? displayText;
+
   var authenController = Get.put(AuthenController());
   var userController = Get.put(UserController());
   var srtController = Get.put(SRTController());
@@ -172,7 +210,9 @@ class _HomeUserPageState extends State<HomeUserPage>
                                       ),
                                     ),
                                     Text(
-                                      "${authenController.loginModel.value.data?.userInfo?.name ?? ""}",
+                                      authenController.loginModel.value.data
+                                              ?.userInfo?.name ??
+                                          "",
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 16,
@@ -241,7 +281,7 @@ class _HomeUserPageState extends State<HomeUserPage>
                             crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
+                              SizedBox(
                                 height: 70,
                                 child: SingleChildScrollView(
                                   child: Column(
@@ -253,7 +293,7 @@ class _HomeUserPageState extends State<HomeUserPage>
                                           Padding(
                                             padding: const EdgeInsets.only(
                                                 bottom: 10),
-                                            child: Container(
+                                            child: SizedBox(
                                               height: 70,
                                               child: SingleChildScrollView(
                                                 child: Column(
@@ -264,385 +304,303 @@ class _HomeUserPageState extends State<HomeUserPage>
                                                               .center,
                                                       children: [
                                                         Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                                  bottom: 10),
-                                                          child:
-                                                              GestureDetector(
-                                                            onTap: () async {
-                                                              positionStreamSubscription
-                                                                  ?.cancel();
-                                                              bool
-                                                                  permissionGranted =
-                                                                  await serverController
-                                                                      .checkPermission();
-                                                              if (permissionGranted) {
-                                                                positionStreamSubscription =
-                                                                    Geolocator
-                                                                        .getPositionStream(
-                                                                  locationSettings:
-                                                                      locationSettings,
-                                                                ).listen((Position?
-                                                                        position) async {
-                                                                  currentPosition =
-                                                                      position;
-                                                                  // double?
-                                                                  //     userLatitude =
-                                                                  //     currentPosition?.latitude;
-                                                                  // double?
-                                                                  //     userLongitude =
-                                                                  //     currentPosition?.longitude;
-                                                                  //13.802836140572818, 100.32441531487531
-                                                                  // 13.802624989527327, 100.32433905309455
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    bottom: 10),
+                                                            child:
+                                                                GestureDetector(
+                                                              onTap: isTap
+                                                                  ? () async {
+                                                                      await positionStreamSubscription
+                                                                          ?.cancel();
 
-                                                                  double?
-                                                                      userLatitude =
-                                                                      13.802857779069916;
-                                                                  double?
-                                                                      userLongitude =
-                                                                      100.3243834313464;
-                                                                  List<String>
-                                                                      nearbyStations =
-                                                                      [];
-                                                                  List<dynamic>
-                                                                      stations =
-                                                                      userController
-                                                                          .stationsModel
-                                                                          .value
-                                                                          .data!
-                                                                          .map(
-                                                                              (e) {
-                                                                    return {
-                                                                      'latitude': e.branchLatitude !=
-                                                                              null
-                                                                          ? double.parse(
-                                                                              e.branchLatitude!)
-                                                                          : 0.0,
-                                                                      'longitude': e.branchLongitude !=
-                                                                              null
-                                                                          ? double.parse(
-                                                                              e.branchLongitude!)
-                                                                          : 0.0,
-                                                                      'radius': e.branchLocationRadius !=
-                                                                              null
-                                                                          ? double.parse(
-                                                                              e.branchLocationRadius!)
-                                                                          : 0.0,
-                                                                      'name':
-                                                                          e.branchName ??
-                                                                              '',
-                                                                      'branchId':
-                                                                          e.branchId ??
-                                                                              '',
-                                                                    };
-                                                                  }).toList();
+                                                                      bool
+                                                                          permissionGranted =
+                                                                          await serverController
+                                                                              .checkPermission();
+                                                                      if (permissionGranted) {
+                                                                        positionStreamSubscription = Geolocator
+                                                                            .getPositionStream(
+                                                                          locationSettings:
+                                                                              locationSettings,
+                                                                        ).listen((Position?
+                                                                            position) async {
+                                                                          currentPosition =
+                                                                              position;
 
-                                                                  for (var station
-                                                                      in stations) {
-                                                                    double
-                                                                        stationLatitude =
-                                                                        station[
-                                                                            'latitude'];
-                                                                    double
-                                                                        stationLongitude =
-                                                                        station[
-                                                                            'longitude'];
-                                                                    double
-                                                                        radius =
-                                                                        station[
-                                                                            'radius'];
+                                                                          double
+                                                                              userLatitude =
+                                                                              13.802555;
+                                                                          double
+                                                                              userLongitude =
+                                                                              100.324303;
 
-                                                                    double
-                                                                        distance =
-                                                                        Geolocator
-                                                                            .distanceBetween(
-                                                                      userLatitude!,
-                                                                      userLongitude!,
-                                                                      stationLatitude,
-                                                                      stationLongitude,
-                                                                    );
+                                                                          List<String>
+                                                                              nearbyStations =
+                                                                              [];
+                                                                          List<dynamic> stations = userController
+                                                                              .stationsModel
+                                                                              .value
+                                                                              .data!
+                                                                              .map((e) {
+                                                                            return {
+                                                                              'latitude': e!.stationLatitude != null ? double.parse(e.stationLatitude!) : 0.0,
+                                                                              'longitude': e.stationLongitude != null ? double.parse(e.stationLongitude!) : 0.0,
+                                                                              'radius': e.stationLocationRadius != null ? double.parse(e.stationLocationRadius!) : 0.0,
+                                                                              'name': e.stationThName ?? '',
+                                                                              'branchId': e.stationId ?? '',
+                                                                            };
+                                                                          }).toList();
 
-                                                                    if (distance <=
-                                                                        radius) {
-                                                                      setState(
-                                                                          () {
-                                                                        targetBranceId =
-                                                                            station['branchId'];
-                                                                        targetLat =
-                                                                            station['latitude'];
-                                                                        targetLong =
-                                                                            station['longitude'];
-                                                                      });
+                                                                          // ตรวจสอบสถานีที่อยู่ใกล้
+                                                                          for (var station
+                                                                              in stations) {
+                                                                            double
+                                                                                stationLatitude =
+                                                                                station['latitude'];
+                                                                            double
+                                                                                stationLongitude =
+                                                                                station['longitude'];
+                                                                            double
+                                                                                radius =
+                                                                                station['radius'];
 
-                                                                      print(
-                                                                          "Distance to ${station['branchId']}: ${distance} meters");
-                                                                      nearbyStations.add(
-                                                                          station[
-                                                                              'name']);
-                                                                    }
-                                                                  }
+                                                                            double
+                                                                                distance =
+                                                                                Geolocator.distanceBetween(
+                                                                              userLatitude,
+                                                                              userLongitude,
+                                                                              stationLatitude,
+                                                                              stationLongitude,
+                                                                            );
 
-                                                                  if (nearbyStations
-                                                                      .isNotEmpty) {
-                                                                    showModalBottomSheet(
-                                                                      context:
-                                                                          context,
-                                                                      builder:
-                                                                          (BuildContext
-                                                                              context) {
-                                                                        return Container(
-                                                                          padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                              horizontal: 13,
-                                                                              vertical: 34),
-                                                                          decoration:
-                                                                              const BoxDecoration(
-                                                                            color:
-                                                                                Colors.white,
-                                                                            borderRadius:
-                                                                                BorderRadius.all(Radius.circular(5)),
-                                                                          ),
-                                                                          child:
-                                                                              Wrap(
-                                                                            children: [
-                                                                              SizedBox(
-                                                                                width: MediaQuery.of(context).size.width,
-                                                                                child: Column(
-                                                                                  mainAxisSize: MainAxisSize.min,
-                                                                                  children: <Widget>[
-                                                                                    const Text(
-                                                                                      'เลือกสถานีรถไฟใกล้คุณ',
-                                                                                      style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+                                                                            if (distance <=
+                                                                                radius) {
+                                                                              setState(() {
+                                                                                targetBranceId = station['branchId'];
+                                                                                targetLat = station['latitude'];
+                                                                                targetLong = station['longitude'];
+                                                                                print(targetBranceId);
+                                                                              });
+
+                                                                              print("Distance to ${station['branchId']}: ${distance} meters");
+                                                                              nearbyStations.add(station['name']);
+                                                                            }
+                                                                          }
+
+                                                                          // แสดง Modal Bottom Sheet หากยังไม่มีการแสดง
+                                                                          if (nearbyStations
+                                                                              .isNotEmpty) {
+                                                                            if (!_isBottomSheetVisible) {
+                                                                              _isBottomSheetVisible = true; // ตั้งค่าสถานะว่า Bottom Sheet กำลังแสดงอยู่
+                                                                              showModalBottomSheet(
+                                                                                context: context,
+                                                                                builder: (BuildContext context) {
+                                                                                  return Container(
+                                                                                    padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 34),
+                                                                                    decoration: const BoxDecoration(
+                                                                                      color: Colors.white,
+                                                                                      borderRadius: BorderRadius.all(Radius.circular(5)),
                                                                                     ),
-                                                                                    ...nearbyStations
-                                                                                        .map((stationName) => Padding(
-                                                                                              padding: const EdgeInsets.fromLTRB(16, 20, 5, 10),
-                                                                                              child: GestureDetector(
-                                                                                                onTap: () async {
-                                                                                                  final cameras = await availableCameras();
-                                                                                                  Get.to(CameraPage(
-                                                                                                    cameras: cameras,
-                                                                                                    branchId: targetBranceId,
-                                                                                                    branchLatitude: targetLat,
-                                                                                                    branchLongtitude: targetLong,
-                                                                                                  ));
-                                                                                                  // !
-                                                                                                  //     .then((value) {
-                                                                                                  //   if (srtController.selectedImage != null) {
-                                                                                                  //     int sizeInBytes = File(srtController.selectedImage!.path).lengthSync();
-                                                                                                  //     if (sizeInBytes > 2097152) {
-                                                                                                  // Get.dialog(
-                                                                                                  //   SMEAlertDialog(
-                                                                                                  //     titleMessage: "แจ้งเตือน",
-                                                                                                  //     contentMessage: "ไฟล์ภาพมีขนาดใหญ่กว่าที่กำหนด",
-                                                                                                  //     submitButton: true,
-                                                                                                  //     submitText: "ตกลง",
-                                                                                                  //     onSubmit: () {
-                                                                                                  //       Get.back();
-                                                                                                  //     },
-                                                                                                  //   ),
-                                                                                                  // );
-                                                                                                  //     } else {
-                                                                                                  //       setState(() {
-                                                                                                  //         File(srtController.selectedImage!.path);
-                                                                                                  //       });
-                                                                                                  //     }
-                                                                                                  //   }
-                                                                                                  // });
-                                                                                                },
-                                                                                                child: Container(
-                                                                                                  height: 60,
-                                                                                                  width: Get.width * 1,
-                                                                                                  decoration: BoxDecoration(
-                                                                                                    color: primaryColor,
-                                                                                                    borderRadius: const BorderRadius.all(
-                                                                                                      Radius.circular(16),
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                  child: Stack(
-                                                                                                    children: [
-                                                                                                      Align(
-                                                                                                        alignment: Alignment.bottomLeft,
-                                                                                                        child: Padding(
-                                                                                                          padding: const EdgeInsets.only(left: 15.0, bottom: 15),
+                                                                                    child: Wrap(
+                                                                                      children: [
+                                                                                        SizedBox(
+                                                                                          width: MediaQuery.of(context).size.width,
+                                                                                          child: Column(
+                                                                                            mainAxisSize: MainAxisSize.min,
+                                                                                            children: <Widget>[
+                                                                                              const Text(
+                                                                                                'เลือกสถานีรถไฟใกล้คุณ',
+                                                                                                style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+                                                                                              ),
+                                                                                              ...nearbyStations
+                                                                                                  .map((stationName) => Padding(
+                                                                                                        padding: const EdgeInsets.fromLTRB(16, 20, 5, 10),
+                                                                                                        child: GestureDetector(
+                                                                                                          onTap: () async {
+                                                                                                            final cameras = await availableCameras();
+                                                                                                            Get.to(CameraPage(
+                                                                                                              cameras: cameras,
+                                                                                                              branchId: targetBranceId,
+                                                                                                              branchLatitude: targetLat,
+                                                                                                              branchLongtitude: targetLong,
+                                                                                                            ));
+                                                                                                          },
                                                                                                           child: Container(
-                                                                                                            height: 30,
-                                                                                                            width: 30,
-                                                                                                            decoration: const BoxDecoration(
-                                                                                                              color: Colors.white,
-                                                                                                              borderRadius: BorderRadius.all(
+                                                                                                            height: 60,
+                                                                                                            width: Get.width * 1,
+                                                                                                            decoration: BoxDecoration(
+                                                                                                              color: primaryColor,
+                                                                                                              borderRadius: const BorderRadius.all(
                                                                                                                 Radius.circular(16),
                                                                                                               ),
                                                                                                             ),
-                                                                                                            child: Icon(
-                                                                                                              FontAwesomeIcons.train,
-                                                                                                              color: Colors.red[700],
-                                                                                                              size: 19,
+                                                                                                            child: Stack(
+                                                                                                              children: [
+                                                                                                                Align(
+                                                                                                                  alignment: Alignment.bottomLeft,
+                                                                                                                  child: Padding(
+                                                                                                                    padding: const EdgeInsets.only(left: 15.0, bottom: 15),
+                                                                                                                    child: Container(
+                                                                                                                      height: 30,
+                                                                                                                      width: 30,
+                                                                                                                      decoration: const BoxDecoration(
+                                                                                                                        color: Colors.white,
+                                                                                                                        borderRadius: BorderRadius.all(
+                                                                                                                          Radius.circular(16),
+                                                                                                                        ),
+                                                                                                                      ),
+                                                                                                                      child: Icon(
+                                                                                                                        FontAwesomeIcons.train,
+                                                                                                                        color: Colors.red[700],
+                                                                                                                        size: 19,
+                                                                                                                      ),
+                                                                                                                    ),
+                                                                                                                  ),
+                                                                                                                ),
+                                                                                                                Padding(
+                                                                                                                  padding: const EdgeInsets.only(
+                                                                                                                    top: 8,
+                                                                                                                    right: 8,
+                                                                                                                    bottom: 8,
+                                                                                                                    left: 70,
+                                                                                                                  ),
+                                                                                                                  child: Align(
+                                                                                                                    alignment: Alignment.centerLeft,
+                                                                                                                    child: Text(
+                                                                                                                      stationName,
+                                                                                                                      overflow: TextOverflow.fade,
+                                                                                                                      maxLines: 1,
+                                                                                                                      style: const TextStyle(
+                                                                                                                        color: Colors.white,
+                                                                                                                        fontSize: 17,
+                                                                                                                        fontWeight: FontWeight.bold,
+                                                                                                                      ),
+                                                                                                                    ),
+                                                                                                                  ),
+                                                                                                                ),
+                                                                                                              ],
                                                                                                             ),
                                                                                                           ),
                                                                                                         ),
-                                                                                                      ),
-                                                                                                      Padding(
-                                                                                                        padding: const EdgeInsets.only(
-                                                                                                          top: 8,
-                                                                                                          right: 8,
-                                                                                                          bottom: 8,
-                                                                                                          left: 70,
-                                                                                                        ),
-                                                                                                        child: Align(
-                                                                                                          alignment: Alignment.centerLeft,
-                                                                                                          child: Text(
-                                                                                                            "สถานีรถไฟ$stationName",
-                                                                                                            overflow: TextOverflow.fade,
-                                                                                                            maxLines: 1,
-                                                                                                            style: const TextStyle(
-                                                                                                              color: Colors.white,
-                                                                                                              fontSize: 17,
-                                                                                                              fontWeight: FontWeight.bold,
-                                                                                                            ),
-                                                                                                          ),
-                                                                                                        ),
-                                                                                                      ),
-                                                                                                    ],
-                                                                                                  ),
-                                                                                                ),
+                                                                                                      ))
+                                                                                                  .toList()
+                                                                                            ],
+                                                                                          ),
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
+                                                                                  );
+                                                                                },
+                                                                              ).whenComplete(() {
+                                                                                _isBottomSheetVisible = false; // รีเซ็ตสถานะเมื่อ Bottom Sheet ปิด
+                                                                              });
+                                                                            }
+                                                                          } else {
+                                                                            if (!_isBottomSheetVisible) {
+                                                                              _isBottomSheetVisible = true; // ตั้งค่าสถานะว่า Bottom Sheet กำลังแสดงอยู่
+                                                                              showModalBottomSheet(
+                                                                                context: context,
+                                                                                builder: (BuildContext context) {
+                                                                                  return Container(
+                                                                                    padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 34),
+                                                                                    decoration: const BoxDecoration(
+                                                                                      color: Colors.white,
+                                                                                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                                                                                    ),
+                                                                                    child: Wrap(
+                                                                                      children: [
+                                                                                        SizedBox(
+                                                                                          width: MediaQuery.of(context).size.width,
+                                                                                          child: const Column(
+                                                                                            mainAxisSize: MainAxisSize.min,
+                                                                                            children: <Widget>[
+                                                                                              Text(
+                                                                                                'เลือกสถานีใกล้คุณ',
+                                                                                                style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
                                                                                               ),
-                                                                                            ))
-                                                                                        .toList()
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        );
-                                                                      },
-                                                                    );
-                                                                  } else {
-                                                                    showModalBottomSheet(
-                                                                      context:
-                                                                          context,
-                                                                      builder:
-                                                                          (BuildContext
-                                                                              context) {
-                                                                        return Container(
-                                                                          padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                              horizontal: 13,
-                                                                              vertical: 34),
-                                                                          decoration:
-                                                                              const BoxDecoration(
-                                                                            color:
-                                                                                Colors.white,
-                                                                            borderRadius:
-                                                                                BorderRadius.all(Radius.circular(5)),
-                                                                          ),
-                                                                          child:
-                                                                              Wrap(
-                                                                            children: [
-                                                                              SizedBox(
-                                                                                width: MediaQuery.of(context).size.width,
-                                                                                child: const Column(
-                                                                                  mainAxisSize: MainAxisSize.min,
-                                                                                  children: <Widget>[
-                                                                                    Text(
-                                                                                      'เลือกสถานีใกล้คุณ',
-                                                                                      style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+                                                                                              SizedBox(height: 20),
+                                                                                              Text(
+                                                                                                'ไม่พบสถานีใกล้คุณ',
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                        ),
+                                                                                      ],
                                                                                     ),
-                                                                                    SizedBox(height: 20),
-                                                                                    Text(
-                                                                                      'ไม่พบสถานีใกล้คุณ',
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                            ],
-                                                                          ),
-                                                                        );
-                                                                      },
-                                                                    );
-                                                                  }
-                                                                });
-                                                              } else {
-                                                                AppSettings
-                                                                    .openAppSettings();
-                                                              }
-                                                            },
-                                                            child: Container(
-                                                              height: 60,
-                                                              width: Get.width *
-                                                                  0.75,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: userController
-                                                                            .userTimeStampModel
-                                                                            .value
-                                                                            .data!
-                                                                            .in_1At ==
-                                                                        null
-                                                                    ? const Color(
-                                                                        0xFFFFC452)
-                                                                    : primaryColor,
-                                                                border: Border.all(
-                                                                    color: Colors
-                                                                        .white),
-                                                                borderRadius:
-                                                                    const BorderRadius
-                                                                        .all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          16),
+                                                                                  );
+                                                                                },
+                                                                              ).whenComplete(() {
+                                                                                _isBottomSheetVisible = false; // รีเซ็ตสถานะเมื่อ Bottom Sheet ปิด
+                                                                              });
+                                                                            }
+                                                                          }
+                                                                        });
+                                                                      } else {
+                                                                        AppSettings
+                                                                            .openAppSettings();
+                                                                      }
+                                                                    }
+                                                                  : null,
+                                                              child: Container(
+                                                                height: 60,
+                                                                width:
+                                                                    Get.width *
+                                                                        0.75,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: containerColor ??
+                                                                      const Color(
+                                                                          0xFFFFC452),
+                                                                  border: Border.all(
+                                                                      color: Colors
+                                                                          .white),
+                                                                  borderRadius:
+                                                                      const BorderRadius
+                                                                          .all(
+                                                                    Radius
+                                                                        .circular(
+                                                                            16),
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                              child: Row(
-                                                                mainAxisAlignment:
-                                                                    MainAxisAlignment
-                                                                        .center,
-                                                                children: [
-                                                                  Icon(
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Icon(
                                                                       FluentIcons
                                                                           .clock_24_filled,
-                                                                      color: userController.userTimeStampModel.value.data!.in_1At ==
-                                                                              null
-                                                                          ? primaryColor
-                                                                          : const Color(
-                                                                              0xFFFFC452)),
-                                                                  const SizedBox(
-                                                                      width:
-                                                                          20),
-                                                                  Text(
-                                                                    userController.userTimeStampModel.value.data!.in_1At !=
-                                                                                null &&
-                                                                            userController.userTimeStampModel.value.data!.out_1At !=
-                                                                                null
-                                                                        ? "เข้างาน"
-                                                                        : userController.userTimeStampModel.value.data!.in_1At ==
-                                                                                null
-                                                                            ? "เข้างาน"
-                                                                            : "ออกงาน",
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .fade,
-                                                                    maxLines: 1,
-                                                                    style:
-                                                                        TextStyle(
-                                                                      color: userController.userTimeStampModel.value.data!.in_1At ==
-                                                                              null
-                                                                          ? primaryColor
-                                                                          : const Color(
+                                                                      color: textColor ??
+                                                                          const Color(
                                                                               0xFFFFC452),
-                                                                      fontSize:
-                                                                          20,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
                                                                     ),
-                                                                  ),
-                                                                ],
+                                                                    const SizedBox(
+                                                                        width:
+                                                                            20),
+                                                                    Text(
+                                                                      displayText ??
+                                                                          "เข้างาน",
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .fade,
+                                                                      maxLines:
+                                                                          1,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: textColor ??
+                                                                            Color(0xFFFFC452),
+                                                                        fontSize:
+                                                                            20,
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
                                                               ),
-                                                            ),
-                                                          ),
-                                                        ),
+                                                            )),
                                                       ],
                                                     ),
                                                   ],

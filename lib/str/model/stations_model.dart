@@ -4,87 +4,197 @@
 class StationsModelData {
 /*
 {
-  "branch_id": "82E1B1CA-1E5A-4043-B06F-385D7968D9A4",
+  "station_id": "75470E54-0E57-4180-9B41-707B8DCD0F9F",
   "company_id": "01634FD5-94A9-4C00-BE9F-A547A8699986",
-  "branch_name": "เตาปูน",
-  "branch_detail": null,
-  "branch_latitude": "13.797412400000001",
-  "branch_longitude": "100.2347819",
-  "branch_location_radius": "20.0",
-  "branch_status": "0",
-  "branch_is_delete": "0",
-  "branch_created_by": null,
-  "branch_created_at": null,
-  "branch_updated_by": null,
-  "branch_updated_at": null
+  "station_code": "3076",
+  "station_th_name": "กบินทร์เก่า",
+  "station_en_name": "Kabin Kao",
+  "station_th_short": "กก.",
+  "station_en_short": "KBK",
+  "station_ch_name": "科比考",
+  "controldivision": "13",
+  "exact_km": "166",
+  "exact_distance": "-165",
+  "km": "165",
+  "class": "98",
+  "station_latitude": "0.0",
+  "station_longitude": "0.0",
+  "station_location_radius": "0.0",
+  "giveway": "0",
+  "dual_track": "0",
+  "comment": "",
+  "station_active": "1",
+  "is_delete": "0",
+  "created_by": "535F247D-1B4C-4397-9C71-785AD098A5E1",
+  "created_at": "2024-08-02 15:45:08.000",
+  "updated_by": null,
+  "updated_at": null,
+  "deleted_by": null,
+  "deleted_at": null
 } 
 */
 
-  String? branchId;
+  String? stationId;
   String? companyId;
-  String? branchName;
-  String? branchDetail;
-  String? branchLatitude;
-  String? branchLongitude;
-  String? branchLocationRadius;
-  String? branchStatus;
-  String? branchIsDelete;
-  String? branchCreatedBy;
-  String? branchCreatedAt;
-  String? branchUpdatedBy;
-  String? branchUpdatedAt;
+  String? stationCode;
+  String? stationThName;
+  String? stationEnName;
+  String? stationThShort;
+  String? stationEnShort;
+  String? stationChName;
+  String? controldivision;
+  String? exactKm;
+  String? exactDistance;
+  String? km;
+  String? theClass;
+  String? stationLatitude;
+  String? stationLongitude;
+  String? stationLocationRadius;
+  String? giveway;
+  String? dualTrack;
+  String? comment;
+  String? stationActive;
+  String? isDelete;
+  String? createdBy;
+  String? createdAt;
+  String? updatedBy;
+  String? updatedAt;
+  String? deletedBy;
+  String? deletedAt;
 
   StationsModelData({
-    this.branchId,
+    this.stationId,
     this.companyId,
-    this.branchName,
-    this.branchDetail,
-    this.branchLatitude,
-    this.branchLongitude,
-    this.branchLocationRadius,
-    this.branchStatus,
-    this.branchIsDelete,
-    this.branchCreatedBy,
-    this.branchCreatedAt,
-    this.branchUpdatedBy,
-    this.branchUpdatedAt,
+    this.stationCode,
+    this.stationThName,
+    this.stationEnName,
+    this.stationThShort,
+    this.stationEnShort,
+    this.stationChName,
+    this.controldivision,
+    this.exactKm,
+    this.exactDistance,
+    this.km,
+    this.theClass,
+    this.stationLatitude,
+    this.stationLongitude,
+    this.stationLocationRadius,
+    this.giveway,
+    this.dualTrack,
+    this.comment,
+    this.stationActive,
+    this.isDelete,
+    this.createdBy,
+    this.createdAt,
+    this.updatedBy,
+    this.updatedAt,
+    this.deletedBy,
+    this.deletedAt,
   });
   StationsModelData.fromJson(Map<String, dynamic> json) {
-    branchId = json['branch_id']?.toString();
+    stationId = json['station_id']?.toString();
     companyId = json['company_id']?.toString();
-    branchName = json['branch_name']?.toString();
-    branchDetail = json['branch_detail']?.toString();
-    branchLatitude = json['branch_latitude']?.toString();
-    branchLongitude = json['branch_longitude']?.toString();
-    branchLocationRadius = json['branch_location_radius']?.toString();
-    branchStatus = json['branch_status']?.toString();
-    branchIsDelete = json['branch_is_delete']?.toString();
-    branchCreatedBy = json['branch_created_by']?.toString();
-    branchCreatedAt = json['branch_created_at']?.toString();
-    branchUpdatedBy = json['branch_updated_by']?.toString();
-    branchUpdatedAt = json['branch_updated_at']?.toString();
+    stationCode = json['station_code']?.toString();
+    stationThName = json['station_th_name']?.toString();
+    stationEnName = json['station_en_name']?.toString();
+    stationThShort = json['station_th_short']?.toString();
+    stationEnShort = json['station_en_short']?.toString();
+    stationChName = json['station_ch_name']?.toString();
+    controldivision = json['controldivision']?.toString();
+    exactKm = json['exact_km']?.toString();
+    exactDistance = json['exact_distance']?.toString();
+    km = json['km']?.toString();
+    theClass = json['class']?.toString();
+    stationLatitude = json['station_latitude']?.toString();
+    stationLongitude = json['station_longitude']?.toString();
+    stationLocationRadius = json['station_location_radius']?.toString();
+    giveway = json['giveway']?.toString();
+    dualTrack = json['dual_track']?.toString();
+    comment = json['comment']?.toString();
+    stationActive = json['station_active']?.toString();
+    isDelete = json['is_delete']?.toString();
+    createdBy = json['created_by']?.toString();
+    createdAt = json['created_at']?.toString();
+    updatedBy = json['updated_by']?.toString();
+    updatedAt = json['updated_at']?.toString();
+    deletedBy = json['deleted_by']?.toString();
+    deletedAt = json['deleted_at']?.toString();
   }
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['branch_id'] = branchId;
+    data['station_id'] = stationId;
     data['company_id'] = companyId;
-    data['branch_name'] = branchName;
-    data['branch_detail'] = branchDetail;
-    data['branch_latitude'] = branchLatitude;
-    data['branch_longitude'] = branchLongitude;
-    data['branch_location_radius'] = branchLocationRadius;
-    data['branch_status'] = branchStatus;
-    data['branch_is_delete'] = branchIsDelete;
-    data['branch_created_by'] = branchCreatedBy;
-    data['branch_created_at'] = branchCreatedAt;
-    data['branch_updated_by'] = branchUpdatedBy;
-    data['branch_updated_at'] = branchUpdatedAt;
+    data['station_code'] = stationCode;
+    data['station_th_name'] = stationThName;
+    data['station_en_name'] = stationEnName;
+    data['station_th_short'] = stationThShort;
+    data['station_en_short'] = stationEnShort;
+    data['station_ch_name'] = stationChName;
+    data['controldivision'] = controldivision;
+    data['exact_km'] = exactKm;
+    data['exact_distance'] = exactDistance;
+    data['km'] = km;
+    data['class'] = theClass;
+    data['station_latitude'] = stationLatitude;
+    data['station_longitude'] = stationLongitude;
+    data['station_location_radius'] = stationLocationRadius;
+    data['giveway'] = giveway;
+    data['dual_track'] = dualTrack;
+    data['comment'] = comment;
+    data['station_active'] = stationActive;
+    data['is_delete'] = isDelete;
+    data['created_by'] = createdBy;
+    data['created_at'] = createdAt;
+    data['updated_by'] = updatedBy;
+    data['updated_at'] = updatedAt;
+    data['deleted_by'] = deletedBy;
+    data['deleted_at'] = deletedAt;
     return data;
   }
 }
 
 class StationsModel {
-  List<StationsModelData>? data;
+/*
+{
+  "data": [
+    {
+      "station_id": "75470E54-0E57-4180-9B41-707B8DCD0F9F",
+      "company_id": "01634FD5-94A9-4C00-BE9F-A547A8699986",
+      "station_code": "3076",
+      "station_th_name": "กบินทร์เก่า",
+      "station_en_name": "Kabin Kao",
+      "station_th_short": "กก.",
+      "station_en_short": "KBK",
+      "station_ch_name": "科比考",
+      "controldivision": "13",
+      "exact_km": "166",
+      "exact_distance": "-165",
+      "km": "165",
+      "class": "98",
+      "station_latitude": "0.0",
+      "station_longitude": "0.0",
+      "station_location_radius": "0.0",
+      "giveway": "0",
+      "dual_track": "0",
+      "comment": "",
+      "station_active": "1",
+      "is_delete": "0",
+      "created_by": "535F247D-1B4C-4397-9C71-785AD098A5E1",
+      "created_at": "2024-08-02 15:45:08.000",
+      "updated_by": null,
+      "updated_at": null,
+      "deleted_by": null,
+      "deleted_at": null
+    }
+  ],
+  "message": "",
+  "message_ex": "",
+  "success": true,
+  "errors": null
+} 
+*/
+
+  List<StationsModelData?>? data;
   String? message;
   String? messageEx;
   bool? success;
@@ -97,22 +207,29 @@ class StationsModel {
     this.success,
     this.errors,
   });
-
   StationsModel.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null) {
-      final v = json['data'] as List<dynamic>;
-      data = v.map((item) => StationsModelData.fromJson(item as Map<String, dynamic>)).toList();
+  if (json['data'] != null) {
+  final v = json['data'];
+  final arr0 = <StationsModelData>[];
+  v.forEach((v) {
+  arr0.add(StationsModelData.fromJson(v));
+  });
+    this.data = arr0;
     }
     message = json['message']?.toString();
     messageEx = json['message_ex']?.toString();
-    success = json['success'] as bool?;
+    success = json['success'];
     errors = json['errors']?.toString();
   }
-
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     if (this.data != null) {
-      data['data'] = this.data!.map((item) => item.toJson()).toList();
+      final v = this.data;
+      final arr0 = [];
+  v!.forEach((v) {
+  arr0.add(v!.toJson());
+  });
+      data['data'] = arr0;
     }
     data['message'] = message;
     data['message_ex'] = messageEx;
